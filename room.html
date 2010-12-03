@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		
+		
+
+	    <title></title>		
+	
+		<script type="text/javascript" src="/jquery.js"></script>
+		<script type="text/javascript" src="/poker.js"></script> 
+		<script type="text/javascript">
+			window.room_id = {{ rid }}
+			window.player_id = {{ player_id }}
+			setInterval(resume, 1000);</script>
+		
+		<style type="text/css">
+			.place {
+				display: block;
+				float:left;margin:5px 5px;
+				position: relative;
+			}
+			.dealer {
+				background: #BBBBBB;
+			}
+			
+			.current {
+				background: #BBFFBB;
+			}
+
+			.bet {
+				padding-bottom: 30px;
+				background: url(/images/token.jpg) no-repeat bottom center;
+			}
+			#lookup {
+				position: absolute;
+				bottom: -140px;
+				left: 400px;
+			}
+		
+		</style>
+		 
+	    <link rel="stylesheet" type="text/css" media="all" href="/styles/style.css" />
+	</head>
+	<body>
+		
+		
+		<div id="room">
+			Etat(<span class="state"></span>)
+			<div class="cards_in"></div>
+			<div class="cards_up"></div>
+			<div class="cards_br"></div>
+		</div>
+	
+		<div id="game" style="clear:both;">
+
+			{% for i in n_p %}
+			<div class="place" id="place_{{ i|add:1 }}">
+
+				<div>
+					<div class="player">						
+						{{ i|add:1 }}:<span class="name"></span>:<b><span class="stack"></span></b>(<span class="state"></span>)
+					</div>
+					
+				</div>				
+				<div class="info"></div>
+				<div class="cards_in"></div>
+				<div class="cards_up"></div>
+				<div class="cards_br"></div>
+				<div class="bets"></div>
+			</div>
+			{% endfor %}				
+		</div>
+		
+		<div id="meta"></div>
+		
+		<div id="me" style="clear:both;">	
+
+			<a id="request_situp" href="/room/{{ rid }}/situp/" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">Se lever</a>
+			<a id="request_sitdown" href="/room/{{ rid }}/sitdown/" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">S'assoir à la room</a>
+			<a id="request_check" href="/room/{{ rid }}/check/" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">Check</a>
+			<a id="request_call" href="/room/{{ rid }}/call/" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;" >Call</a>
+			<a id="request_raise" href="/room/{{ rid }}/raise/?amount=100" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">Raise by 100</a>
+			<a id="request_allin" href="/room/{{ rid }}/allin/" onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">All-in</a>
+			
+			<a id="request_lookup" href="/room/{{ rid }}/lookup" onclick="return false;" onmousedown=" $.getJSON($(this).attr('href'),null,resume_action); return false; ">Lookup</a>
+
+			<a href="/room/{{ rid }}/reset/" onclick="$.get($(this).attr('href')); return false;">Reset</a>
+		</div>
+		
+		<div id="jokers" >
+			{% for joker in jokers %}
+				<a href="/room/{{ rid }}/{{ joker.name }}" 
+					onclick="$.getJSON($(this).attr('href'),null,resume_action); return false;">
+					{{ joker.title }}</a>
+			{% endfor %}
+		</div>
+		
+		<div id="lookup">
+			
+		</div>
+		
+	</body>
+</html>

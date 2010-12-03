@@ -1,0 +1,89 @@
+body { background : center center no-repeat }
+
+.dealer {
+	background: #BBBBBB;
+}
+
+.current {
+	background: #BBFFBB;
+}
+
+#lookup {
+	position: fixed;
+	bottom: -140px;
+	left: 400px;
+	width:600px;
+}
+
+#table {
+	width: 450px;
+	/µheight: 600px;
+	position: relative;
+	margin: 30px auto;
+}
+#table img.table {
+	width: 100%;
+}
+#table #deck {
+	width: 30px;
+	height: 50px;
+	position: absolute;
+	left: 70%;
+	top: 50%;
+}
+#table #cards {
+	position: absolute;
+	left: 31%;
+	top: 0;
+	width: 100px;
+	height: 5px;
+	background: red;
+}
+
+
+#table .empty .player {  }
+#table .place .cards { position: absolute; left:0px; top:0px; width:100px; }
+
+div.card { width: 50px; height:80px; display: block; position: relative; }
+div.card img { width:100%; height:100%; }
+.me div.cards { cursor: pointer }
+
+#table .place .cards img:nth-child(2) { margin-left: -10px; }
+
+#table .place .chipbox { position: absolute; width: 100px; height:100px; }
+#table .place .chip img { 	width: 20px; height: 20px; }
+#table .place .chip { 
+	position: absolute;
+	left:0px;
+	top: 0px;
+	width: 20px; height: 20px;
+}
+#table .place .chips { float: left; position: relative; left:0px; top:0px; width: 20px; height: 20px; }
+
+#table .place .cards .card img { width: 35px; height: 50px; }
+
+
+#table .fold { opacity: 0,5; background: grey; }
+#table .check { background: green;  }
+#table .call { background: yellow;  }
+#table .raise { background: orange;  }
+#table .allin { background: red; }
+#table .place {
+	position: absolute;
+	
+	width: 5px;
+	height: 5px;
+	background: red;
+}
+
+#table .player .name,
+#table .player .stack,
+#table .player .state {
+	position: absolute;
+} 
+#table .player span { white-space: nowrap; }
+#table .player .unstack { font: bold 20px Arial; color: red; }
+#table .player .restack { font: bold 20px Arial; color: green; }
+#table .player { 
+
+}

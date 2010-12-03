@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="aceofspades.svg"
+   sodipodi:docbase="/home/silsor/graphics/mine"
+   inkscape:version="0.42+devel"
+   sodipodi:version="0.32"
+   id="svg2"
+   height="297mm"
+   width="210mm">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="880"
+     inkscape:window-width="1280"
+     inkscape:grid-bbox="true"
+     showgrid="false"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     inkscape:cy="489.85726"
+     inkscape:cx="477.35156"
+     inkscape:zoom="0.7"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+        <dc:title>Ace of Spades</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Jeff Bonham</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>http://commons.wikimedia.org/wiki/Image:Aceofspades.svg</dc:source>
+        <dc:description>Ace of Spades card logo.  Created in Inkscape.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>ace</rdf:li>
+            <rdf:li>spade</rdf:li>
+            <rdf:li>spades</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Attribution" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <rect
+       rx="17.142857"
+       width="600.00000"
+       height="800.00000"
+       ry="17.142857"
+       y="126.18109"
+       x="72.047241"
+       id="rect1291"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000;marker:none;marker-start:none;marker-mid:none;marker-end:none;visibility:visible;display:block;overflow:visible" />
+    <path
+       sodipodi:nodetypes="cccccccc"
+       id="path2076"
+       d="M 261.03350,464.19408 C 129.49803,598.57612 257.42876,696.45072 361.42645,632.29382 C 361.99308,665.39200 336.04203,696.29167 320.07998,725.83782 L 432.36595,725.83782 C 415.93215,697.12109 388.48264,665.48362 387.47946,632.29382 C 493.65850,693.28778 606.57603,586.91861 488.75743,464.19408 C 427.32558,396.79465 388.92262,344.35320 374.45297,326.52436 C 361.25204,343.90581 326.08488,395.01468 261.03350,464.19408 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.92204065pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+    <text
+       sodipodi:linespacing="100%"
+       id="text3065"
+       y="206.35907"
+       x="82.752068"
+       style="font-size:95.593079;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Serif;text-anchor:start;writing-mode:lr-tb"
+       xml:space="preserve"><tspan
+         y="206.35907"
+         x="82.752068"
+         id="tspan3067"
+         sodipodi:role="line">A</tspan></text>
+    <text
+       transform="scale(-1.000000,-1.000000)"
+       sodipodi:linespacing="100%"
+       id="text3069"
+       y="-846.08978"
+       x="-664.06226"
+       style="font-size:95.593079;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Serif;text-anchor:start;writing-mode:lr-tb"
+       xml:space="preserve"><tspan
+         y="-846.08978"
+         x="-664.06226"
+         id="tspan3071"
+         sodipodi:role="line">A</tspan></text>
+    <path
+       sodipodi:nodetypes="cccccccc"
+       id="path3073"
+       d="M 97.687572,236.89719 C 75.481032,259.58431 97.079002,276.10803 114.63646,265.27671 C 114.73212,270.86453 110.35092,276.08118 107.65612,281.06932 L 126.61286,281.06932 C 123.83841,276.22121 119.20424,270.88000 119.03487,265.27671 C 137.08119,275.99611 156.02396,257.61622 136.13317,236.89719 C 125.76191,225.51845 119.27851,216.66500 116.83567,213.65503 C 114.60702,216.58947 108.66990,225.21795 97.687572,236.89719 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.15566396pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+    <path
+       sodipodi:nodetypes="cccccccc"
+       id="path3077"
+       d="M 650.17052,815.68430 C 672.37706,792.99718 650.77909,776.47346 633.22163,787.30478 C 633.12597,781.71696 637.50717,776.50031 640.20197,771.51217 L 621.24523,771.51217 C 624.01968,776.36028 628.65385,781.70149 628.82322,787.30478 C 610.77690,776.58538 591.83413,794.96527 611.72492,815.68430 C 622.09618,827.06304 628.57958,835.91649 631.02242,838.92646 C 633.25107,835.99202 639.18819,827.36354 650.17052,815.68430 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.15566396pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+  </g>
+</svg>

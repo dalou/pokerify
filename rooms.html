@@ -1,0 +1,124 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		
+		
+
+	    <title></title>	
+		
+		{% if rid %}
+		
+		<script type="text/javascript" src="/javascripts/jquery.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery.transform-0.8.0.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-ui-1.8.6.custom.min.js"></script>
+		<script type="text/javascript" src="/javascripts/players.js"></script> 
+		<script type="text/javascript" src="/javascripts/room.js"></script> 
+		<script type="text/javascript" src="/javascripts/cards.js"></script> 
+		<script type="text/javascript" src="/javascripts/money.js"></script> 
+		<script type="text/javascript" src="/javascripts/bets.js"></script> 
+	<script type="text/javascript" src="/javascripts/poker.js"></script> 
+		<script type="text/javascript">
+			window.rid = {{ rid }}
+			setInterval(resume, 1000);</script>
+		
+		<style type="text/css">
+			@import url(/room.css); 
+		
+		</style>
+		 
+	    <link rel="stylesheet" type="text/css" media="all" href="/styles/style.css" />
+		{% endif %}
+		
+	</head>
+	<body>
+	
+	
+	
+	
+		<div id="meta" style="z-index:999999;position: absolute; left:0; top:0px;"></div>
+		<div style="float:right;">
+			{% for r in rooms %}
+
+			<div>
+				<a href="/room/{{ r.id }}/enter/">{{ r.id }} ({{ r.nb_players }} players) </a> - 
+				<a href="/room/{{ r.id }}/restart/">restart</a>
+				<a href="/room/{{ r.id }}/stop/">stop</a>
+				<a href="/room/{{ r.id }}/addfake/">add fakes</a>
+			</div>
+
+			{% endfor %}
+		</div>
+		<a style="" href="/room/add/">Add room</a>
+		
+		
+		{% if rid %}
+		
+		<div id="room" style="float:left;">
+			Etat(<span class="state"></span>)
+			
+
+				
+				<div id="actions" style="position:absolute; left:0px; top:50px">
+				
+					<a id="request_situp" href="/room/{{ rid }}/situp/" onclick="action(this); return false;">Se lever</a>
+					<a id="request_sitdown" href="/room/{{ rid }}/sitdown/" onclick="action(this); return false;">S'assoir à la room</a>
+					<a id="request_check" href="/room/{{ rid }}/check/" onclick="action(this); return false;">Check</a>
+					<a id="request_call" href="/room/{{ rid }}/call/" onclick="action(this); return false;" >Call</a>
+					<div id="request_raise" href="/room/{{ rid }}/raise/?amount=100" onclick="action(this); return false;">
+						Raise by
+						<div></div>
+					</div>
+					<a id="request_allin" href="/room/{{ rid }}/allin/" onclick="action(this); return false;">All-in</a>
+					<a id="request_fold" href="/room/{{ rid }}/fold/" onclick="action(this); return false;">Fold</a>
+					
+					
+					<a href="/room/{{ rid }}/reset/" onclick="action(this); return false;">Reset</a>
+				
+				
+				</div>
+			
+		</div>
+		
+		
+			<div id="table" style="clear:both">
+				<gimg class="table" src="/images/back.png" />
+				<div id="cards"></div>
+				<div id="deck"></div>
+				{% for i in n_p %}
+				<div class="place empty" id="place{{ i|add:1 }}">
+					<div class="player">						
+						<span class="name">Undefined</span>
+						<div class="stack"></div>
+					</div>
+					<div class="info"></div>
+					<div class="cards"></div>
+					<div class="bets"></div>
+				</div>
+				{% endfor %}
+			</div>
+	
+
+								
+			</div>
+			
+			<div id="deck"></div>
+			
+			
+			
+			<div id="jokers" >
+				{% for joker in jokers %}
+					<a href="/room/{{ rid }}/{{ joker.name }}" 
+						onclick="action(this); return false;">
+						{{ joker.title }}</a>
+				{% endfor %}
+			</div>
+			
+			<div id="lookup">
+				
+			</div>
+		
+		{% endif %}
+
+

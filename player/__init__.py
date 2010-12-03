@@ -1,0 +1,12 @@
+S_UP = 0
+S_IDLE = 1
+S_WAITING = 2
+S_FOLD = 3
+S_CALL = 4
+S_CHECK = 5
+S_RAISE = 6
+S_ALLIN = 7
+
+C_CARDS_IN = 0
+
+T_DELAY = 10
