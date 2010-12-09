@@ -18,7 +18,7 @@
 		<script type="text/javascript" src="/javascripts/cards.js"></script> 
 		<script type="text/javascript" src="/javascripts/money.js"></script> 
 		<script type="text/javascript" src="/javascripts/bets.js"></script> 
-	<script type="text/javascript" src="/javascripts/poker.js"></script> 
+		<script type="text/javascript" src="/javascripts/poker.js"></script> 
 		<script type="text/javascript">
 			window.rid = {{ rid }}
 			setInterval(resume, 1000);</script>
@@ -83,20 +83,8 @@
 		
 		
 			<div id="table" style="clear:both">
-				<gimg class="table" src="/images/back.png" />
-				<div id="cards"></div>
-				<div id="deck"></div>
-				{% for i in n_p %}
-				<div class="place empty" id="place{{ i|add:1 }}">
-					<div class="player">						
-						<span class="name">Undefined</span>
-						<div class="stack"></div>
-					</div>
-					<div class="info"></div>
-					<div class="cards"></div>
-					<div class="bets"></div>
-				</div>
-				{% endfor %}
+				
+				
 			</div>
 	
 

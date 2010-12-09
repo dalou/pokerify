@@ -27,6 +27,7 @@
 
 
 $(function() {
+	Room.init();
 	$('body').delegate('div.me div.cards', 'mousedown', function() {
 		command( '/room/'+window.rid+'/lookup');
 		return false;
@@ -70,27 +71,14 @@ function action(self) {
 	//$('#meta').append( $('<div>'+$(self).attr('href')+'</div>').css({ background: 'green', color: 'white', padding: '5px'}) )
 }
 function command(url) {
-	$.ajax({ url: url, dataType: 'html', success: resume_action });
+	$.ajax({ url: url, dataType: 'json', success: resume_action });
 }
-function resume() { $.ajax({ url: "/room/"+window.rid+(_room ? '/resume/':'/enter/'), dataType: 'html', success: resume_action })}
+function resume() { $.ajax({ url: "/room/"+window.rid+(Room.enter ? '/resume/':'/enter/'), dataType: 'json', success: resume_action })}
 function resume_action(data) {
-	//try {
-		if(!_room) _room = new Room;
-	//} catch(e) { console.log(e) }
-	if( data != "" ) {
-		data = eval(data);
-		
-		for(var i in data) {
-			//console.log(data[i][0])
-			//try{ 
-				_room['com_'+data[i][0]](data[i]); 
-			//} catch(e) { console.log(e) }
-		}
-		/*if( data.length ) clearTimeout( window.tt )
-		window.tt = */
-	}
+
+	Room.ping( data )
 	jQuery.fx.off = false;
-	_room.enter = true
+	Room.enter = true
 }
 
 

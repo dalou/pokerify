@@ -1,4 +1,5 @@
-body { background : center center no-repeat }
+body { background : center center no-repeat;
+background: url(/images/back2.png)  }
 
 .dealer {
 	background: #BBBBBB;
@@ -16,33 +17,24 @@ body { background : center center no-repeat }
 }
 
 #table {
-	width: 450px;
-	/µheight: 600px;
-	position: relative;
-	margin: 30px auto;
+	position: absolute;
+	left: 200px;
+	top: 200px;
+
 }
 #table img.table {
 	width: 100%;
 }
 #table #deck {
-	width: 30px;
-	height: 50px;
-	position: absolute;
-	left: 70%;
-	top: 50%;
+
 }
 #table #cards {
-	position: absolute;
-	left: 31%;
-	top: 0;
-	width: 100px;
-	height: 5px;
-	background: red;
+
 }
 
 
 #table .empty .player {  }
-#table .place .cards { position: absolute; left:0px; top:0px; width:100px; }
+#table .place .cards { }
 
 div.card { width: 50px; height:80px; display: block; position: relative; }
 div.card img { width:100%; height:100%; }
@@ -62,7 +54,18 @@ div.card img { width:100%; height:100%; }
 
 #table .place .cards .card img { width: 35px; height: 50px; }
 
-
+#table .place { cursor: pointer; }
+#table .stackamount { 
+	position: absolute;
+	opacity: 0; 
+	background: grey;
+	border: 3px solid black; 
+	border-radius: 13px 7px;
+	padding: 5px;
+	color: white;
+	z-index: 9999999;
+	font: normal bold 13px Arial;
+}
 #table .fold { opacity: 0,5; background: grey; }
 #table .check { background: green;  }
 #table .call { background: yellow;  }
@@ -70,15 +73,13 @@ div.card img { width:100%; height:100%; }
 #table .allin { background: red; }
 #table .place {
 	position: absolute;
-	
-	width: 5px;
-	height: 5px;
 	background: red;
 }
 
-#table .player .name,
-#table .player .stack,
-#table .player .state {
+#table .place .name,
+#table .place .stack,
+#table .place .timer,
+#table .place .state {
 	position: absolute;
 } 
 #table .player span { white-space: nowrap; }

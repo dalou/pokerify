@@ -15,7 +15,20 @@ pairs =		[3721,3481,2809,1849,1681,1369,961,841,529,361,289,169,121]
 
 cardsstr = 	['As','Ah','Ad','Ac','Ks','Kh','Kd','Kc','Qs','Qh','Qd','Qc','Js','Jh','Jd','Jc','Ts','Th','Td','Tc','9s','9h','9d','9c','8s','8h','8d','8c','7s','7h','7d','7c','6s','6h','6d','6c','5s','5h','5d','5c','4s','4h','4d','4c','3s','3h','3d','3c','2s','2h','2d','2c']
 
-def deck52(): return list(hights)
+
+class Card():
+	
+	def __init__( self, prime, visible=False ):
+	   self.prime = prime
+	   self.visible = visible
+	  
+	def visible( self, visible ):
+		self.visible = visible
+
+def deck52(): 
+	cards = [] 
+	for prime in hights: cards.append( Card( prime ) )
+	return cards
 
 def shuffle( cards ):
 	random.shuffle(cards)

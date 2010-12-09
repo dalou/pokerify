@@ -1,5 +1,5 @@
 import socket
-import threading
+import threading, time
 from urlparse import parse_qs
 
 class Server( ):
@@ -18,8 +18,10 @@ class Server( ):
 	def handle( self, client, addr ):
 		while 1:
 			
+			t0 = time.time()
+			
 			try:
-				message = client.recv(1024)
+				message = client.recv(2024)
 				if not message: break
 			except: break
 
@@ -28,11 +30,14 @@ class Server( ):
 			for k in params.keys(): args[k] = params[k][0]
 
 			command = args.get('aid')
-			if command:
+			if command:			
+				
 				response = self.ping( command, args )
 				if response : client.send( str(response) )
 				else: client.send( '[]' )
 			else: client.send( '[]' )
+			
+			print command, "in", time.time() - t0, "seconds"
 
 		"""message = client.recv(1024)
 		self.attributes = parse_qs( message )
@@ -62,7 +67,7 @@ def send( command, addr ):
 	sock = socket.socket(  )
 	sock.connect( addr )
 	sock.send( command )
-	data = sock.recv(1024)
+	data = sock.recv(2024)
 	sock.close()
 	return data
 	
