@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 import datetime, sys, os, traceback
-from pokerify.core import servers, ping
+from pokerify.core import servers
 from urlparse import parse_qs
 
 class Casino( servers.Server ):
@@ -14,17 +14,14 @@ class Casino( servers.Server ):
 		try:
 			
 			#event = __import__('pokerify.requests.%s' % command, globals(), locals(), [ 'apply' ], -1)
-			reload( ping )
+
 			command = 'command_%s' % command
 			
 			room = self.getRoom( args.get('rid') )
 			player = room.getPlayer( args.get('pid'), args ) if room else None
-			if room and hasattr( room, command ): 
-				event = getattr( room, command )				
-				if event( self, player ): player.pong()
-			elif  hasattr( ping, command ): 
-				event = getattr( ping, command )
-				return event( self, room, player )
+			if player and hasattr( player, command ): return getattr( player, command )(  )			
+			elif room and hasattr( room, command ): return  getattr( room, command )( player )
+			elif hasattr( self, command ): return getattr( self, command )( room, player )
 				
 		except Exception as inst:			
 			exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -45,6 +42,24 @@ class Casino( servers.Server ):
 	def __init__( self, addr ):
 		self.addRoom( )
 		servers.Server.__init__( self, addr )
+		
+	def command_getrooms( self, ro, pl ):
+		results = []
+		for room in self.rooms.values():
+			results.append({
+				'nb_players' : len(room.getPlayers( )),
+				'id' : room.rid,
+				'state' : room.state
+			})
+		return results
+	
+	def command_addroom( self, ro, pl  ):
+		self.addRoom()
+		return False
+	
+	def command_stoproom( self, ro, pl  ):	
+		del self.rooms[ro.rid]
+		return False
 		
 def get( data, addr ): return servers.send( data, addr )
 	

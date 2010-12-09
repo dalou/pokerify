@@ -5,6 +5,7 @@ from urlparse import parse_qs
 class Server( ):
 	def __init__( self, addr ):
 		self.addr = addr
+		self.times = []
 		try:
 			print "Server is running on %s:%s:" % addr
 			self.listen()
@@ -37,7 +38,11 @@ class Server( ):
 				else: client.send( '[]' )
 			else: client.send( '[]' )
 			
-			print command, "in", time.time() - t0, "seconds"
+			self.times.append( time.time() - t0 )
+			if len( self.times ) > 10:
+				sec = float(sum( self.times )) / len( self.times )
+				print command, "average", sec*1000.00 , "msec (", sec, " sec)" 
+				self.times = []
 
 		"""message = client.recv(1024)
 		self.attributes = parse_qs( message )

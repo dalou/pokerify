@@ -1,6 +1,5 @@
-import random, time, types
+import random
 from pokerify.core import players, cards, rooms, money
-from pokerify.rules.texasholdem import bots
 
 #DELAYS
 DELAY_FAST = 0
@@ -12,7 +11,7 @@ DELAY_PLAYER = 50#10.00
 PLAYER, ROOM = xrange(2)
 
 #SIGNALS
-RESET, CURRENT, DEALER, PLAYER, BET, STATE, PSTATE, GIVECARD, SHOWCARD, \
+RESET, CURRENT, DEALER, PLAYER_STATE, BET, ROOM_STATE, PLAYER_SEAT, PLAYER_CARD, SHOWCARD, \
 PSHOWCARD, BURNCARD, PBURNCARD, STACK, WIN, RESULT, LOOKUP = xrange(16)
 
 def signals2json():pass
@@ -35,15 +34,75 @@ class Player( players.Player ):
 	
 	bets = []
 	
-	def event_setState( self, state ): self.addEvent( PLAYER, 1, state )
+	def event_setState( self, state ): self.addEvent( False, PLAYER_STATE, self, state )
+	def event_addCard( self, card ): self.addEvent( False, PLAYER_CARD, self, card )
+	def event_popCard( self, card ): pass
+	def event_popCards( self, cards ): pass
+	def event_setSeat( self, seat ): self.addEvent( False, PLAYER_SEAT, self, seat )
+	def event_addChips( self, chips ): pass
+	def event_popChips( self, chips ): pass
 	
 	def bet( self, amount=None, chips=None ):
 		chips = self.chips.popAmount( amount )
 		self.bets.append( chips )
+		
+	def play( self ):
+		i = int(random.random()*100)
+		#if i >= 95: p.ping( 'allin' )
+		#elif i >= 65: p.ping( 'raiseby', { 'amount': 1000 })
+		if i >= 90: self.command_fold( )
+		elif i >= 50: self.command_call( )
+		else: self.command_check( )
+		
+	def command_sitdown( self ):
+		if self.setSeat( ) and self.setState( WAITING ): return self.room.command_resume( self )
+		return False
+
+	def command_situp( self, ca, pl ):	
+		if self.setState( UP ): return self.room.command_resume( self )
+		return False
+	
+	def command_lookup( self, ca, pl ):
+		cards = self.getCards()
+		if cards:
+			#self.public( 'lookup', pl )
+			#self.private( 'lookup', pl, cards )
+			return self.pong()
+		return False		
+	
+	def command_fold( self ):	
+		if self.isState( READY ) and self.room.isState( INTURN ):
+			cards = self.popCards()
+			self.setState( FOLD )	
+			#self.addEvent( PLAYER, player )
+			return self.room.command_resume( self )					
+		return False
+		
+	def command_check( self ):	
+		if self.isState( READY ) and self.room.isState( INTURN ) and self.betstotal == self.room.betsceil \
+		  and self.setState( CHECK ): return self.room.resume( self )
+		return False
+	
+	def command_call( self ):	
+		if self.isState( READY ) and self.room.isState( INTURN ) and self.betstotal < self.room.betsceil \
+		  and self.bet( self.room.betsceil - self.betstotal ) and self.setState( CALL ): return self.room.resume( self )
+		return False
+		
+	def command_raise( self ):
+		if self.isState( READY ) and self.room.isState( INTURN ) and self.room.bet( ro.betsceil*2 ) \
+		  and self.setState( RAISE ): return self.room.resume( self )
+		return False
+		
+	def command_allin( self ):	
+		if self.isState( READY ) and self.room.isState( INTURN ) and self.bet( amount=self.chips.amount ) \
+		  and self.setState( ALLIN ): return self.room.resume( self )		
+		return False
 
 class Room( rooms.Room ):	
 	
-	def event_setState( self, state ): self.addEvent( ROOM, 1, state )
+	def event_setState( self, state ): self.addEvent( False, ROOM_STATE, state )
+	def event_setDeck( self, deck ): pass
+	def event_addPlayer( self, player ): pass
 	
 	def __init__( self, *args, **kwargs ):
 		rooms.Room.__init__( self, *args, **kwargs )
@@ -92,9 +151,9 @@ class Room( rooms.Room ):
 	
 	
 		
-	def command_enter( self, ca, pl ):
+	def command_enter( self, player=None ):
 		
-		pl.addEvent( True, ROOM, [ RESET, [] ] )
+		player.addEvent( True, ROOM, [ RESET, [] ] )
 		"""self.events = { 
 			'reset' : 1,
 			'state' : self.state,
@@ -113,9 +172,9 @@ class Room( rooms.Room ):
 				}"""
 		#for card in self.room.cards[-1]: self.events['cards'].append( card ) #pong.showcard( pl, card )
 		
-		return self.command_resume( ca, pl )
+		return self.command_resume( player )
 		
-	def command_addfake( self, ca, pl  ):		
+	def command_addfake( self, player ):		
 		self.getPlayer( 2, { 'name':"Kane", 'stack': 20000, 'fake':True } )
 		self.getPlayer( 3, { 'name':"Undertaker", 'stack': 5000, 'fake':True } )
 		self.getPlayer( 4, { 'name':"Jeriko", 'stack': 5000, 'fake':True } )
@@ -123,65 +182,29 @@ class Room( rooms.Room ):
 		self.getPlayer( 6, { 'name':"The miz", 'stack': 120000, 'fake':True } )
 		self.getPlayer( 7, { 'name':"Cena", 'stack': 10000, 'fake':True } )
 
-		for p in self.getPlayers(): self.command_sitdown( ca, p )
+		for p in self.getPlayers(): p.command_sitdown( )
 		
-	def command_sitdown( self, ca, pl ):
-		if pl.setSeat( ) and pl.setState( WAITING ): return self.command_resume( ca, pl )
-		return False
-
-	def command_situp( self, ca, pl ):	
-		if pl.setState( UP ): return self.command_resume( ca, pl )
-		return False
-	
-	def command_lookup( self, ca, pl ):
-		cards = pl.getCards()
-		if cards:
-			pl.public( 'lookup', pl )
-			pl.private( 'lookup', pl, cards )
-			return pl.pong()
-		return False		
-	
-	def command_fold( self, ca, player ):	
-		if player.isState( READY ) and self.isState( INTURN ):
-			cards = player.popCards()
-			player.setState( FOLD )	
-			player.addEvent([ [PLAYER, player], [] ])
-			return self.command_resume( ca, player )					
-		return False
-		
-	def command_check( self, ca, pl ):	
-		if pl.isState( READY ) and self.isState( INTURN ) and pl.betstotal == self.betsceil \
-		  and pl.setState( CHECK ): return self.resume(  ca, pl  )
-		return False
-	
-	def command_call( self, ca, pl ):	
-		if pl.isState( READY ) and self.isState( INTURN ) and pl.betstotal < self.betsceil \
-		  and pl.bet( self.betsceil - pl.betstotal ) and pl.setState( CALL ): return self.resume( ca, pl )
-		return False
-		
-	def command_raise( self, ca, pl ):
-		if pl.isState( READY ) and self.isState( INTURN ) and self.bet( ro.betsceil*2 ) \
-		  and pl.setState( RAISE ): return self.resume( ca, pl )
-		return False
-		
-	def command_allin( self, ca, pl):	
-		if pl.isState( READY ) and self.isState( INTURN ) and pl.bet( amount=pl.chips.amount ) \
-		  and pl.setState( ALLIN ): return self.resume( ca, pl )		
-		return False
-		
-	def command_resume( self, ca=None, pl=None ):
+	def command_resume( self, player ):
 		
 		if not self.isTimeOut(): return False
 		
 		if self.isState( NEW ): 
 		
-			if len( self.getPlayers( state=SIT ) ) > 1:
+			if len( self.getPlayers( state=WAITING ) ) > 1:
 
-				for p in self.getPlayers( ): p.setTimeOut( DELAY_PLAYER ) and p.isState( SIT ) and p.setState( WAITING )
-				self.reset() and self.setDeck( cards.deck52() ) and cards.shuffle( self.deck ) and self.setDealer( self.getPlayer( seat=1 ) if not self.dealer else self.dealer.next( 1, state=WAITING ) )
+				for p in self.getPlayers( state=WAITING ): p.setTimeOut( DELAY_PLAYER ) 
+	
+				self.reset() 
+				self.setDeck( cards.deck52() ) 
+				cards.shuffle( self.deck ) 
+				self.setDealer( self.dealer.next( 1, state=WAITING ) if self.dealer else self.getPlayer( seat=1 ) )
 				
-				for count, blind in enumerate( self.blinds ): self.dealer.next( count + 1, state=WAITING ).bet( blind )					
-				self.setCurrent( self.dealer.next( len( self.blinds ) + 1, state=WAITING ) ) and self.setTimeOut( DELAY_NORMAL ) and self.setState( SERVING )
+				for count, blind in enumerate( self.blinds ): 
+					self.dealer.next( count + 1, state=WAITING ).bet( blind )		
+								
+				self.setCurrent( self.dealer.next( len( self.blinds ) + 1, state=WAITING ) ) 
+				self.setTimeOut( DELAY_NORMAL ) 
+				self.setState( SERVING )
 		
 		elif self.isState( SERVING ): 
 		
@@ -200,7 +223,7 @@ class Room( rooms.Room ):
 		
 			if self.current:
 				#p.executeRequest( )
-				if self.current.fake: bots.play( self, ca, self.current )				
+				if self.current.fake: self.current.play(  )				
 				if self.current.isTimeOut(): 
 					self.current.foldCards()
 					self.current.setState( UP )
@@ -254,7 +277,7 @@ class Room( rooms.Room ):
 			self.setState( NEW )
 		
 		
-		if pl: return pl.pong()
+		if player: return player.pong()
 		 
 
 					

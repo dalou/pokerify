@@ -88,12 +88,13 @@ class Player(  ):
 
 	# PERFECT SYSTEM
 	def next( self, count=1, state=None ):
-		i = abs( count )
-		for player in self.room.players:
-			if player.seat and self.seat + count % self.room.places == player.seat and ( player.isState( state ) or state == None ):
-				return player
-			if i <= 0: return player
-			i -= 1
+		i = abs( count )		
+		players = self.room.getPlayers( state=state )
+		for player in players:
+			if player.seat and ( player.isState( state ) or state == None ):
+				if ( self.seat + count) % len( players ) == player.seat or i <= 0 : return player
+				i -= 1
+		print
 		return 0		
 	def prev( self, count=1, state=None ): return self.next( count=-count, state=state )
 	

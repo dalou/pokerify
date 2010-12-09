@@ -18,6 +18,7 @@ cardsstr = 	['As','Ah','Ad','Ac','Ks','Kh','Kd','Kc','Qs','Qh','Qd','Qc','Js','J
 
 class Card():
 	
+	def __repr__( self ): return str( self.prime )
 	def __init__( self, prime, visible=False ):
 	   self.prime = prime
 	   self.visible = visible

@@ -76,6 +76,7 @@ function command(url) {
 function resume() { $.ajax({ url: "/room/"+window.rid+(Room.enter ? '/resume/':'/enter/'), dataType: 'json', success: resume_action })}
 function resume_action(data) {
 
+	if( data.length ) console.log( data )
 	Room.ping( data )
 	jQuery.fx.off = false;
 	Room.enter = true
