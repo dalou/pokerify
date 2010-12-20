@@ -1,10 +1,10 @@
 # -*- coding: utf8 -*-
-
+import random
 
 class Chips( ):
-	def __init__( self, amount, values=[ 100, 200, 500, 1000, 5000 ] ):
-			
-		self.amount = 0	
+	def __init__( self, amount, values=[ 100, 200, 500, 1000, 5000 ] ):			
+		
+		self.amount = 0
 		self.minvalue = None
 		self.values = values
 		self.counts = []
@@ -12,18 +12,18 @@ class Chips( ):
 			self.counts.append( 0 )
 			if not self.minvalue: self.minvalue = value
 			if value < self.minvalue: self.minvalue = value
+		
 		self.amountToChips( amount )
 		
 	def __repr__( self ):
-		result = {}
+		result = []
 		i = 0
 		for value in self.values:
-			result[ value ] = self.counts[ i ]
+			if self.counts[ i ]: result.append( [value, self.counts[ i ]] )
 			i+=1
 		return result.__repr__()
 			
 	def amountToChips( self, amount ):
-		
 		amount = int( amount )
 		itoken=0
 		self.chips = {}
@@ -48,13 +48,13 @@ class Chips( ):
 			
 	def addChips( self, chips ):
 		i = 0
-		for count in chips.counts(): 
+		for count in chips.counts: 
 			self.counts[ i ] += count
 			i+=1
 		self.amount += chips.amount
 		
 	def addAmount( self, amount ):
-		self.insertChips( Chips( amount, self.values ) )
+		self.addChips( Chips( amount, self.values ) )
 		
 		
 	def popAmount( self, amount ):

@@ -19,10 +19,10 @@ class Server( ):
 	def handle( self, client, addr ):
 		while 1:
 			
-			t0 = time.time()
+			#t0 = time.time()
 			
 			try:
-				message = client.recv(2024)
+				message = client.recv(5024)
 				if not message: break
 			except: break
 
@@ -33,16 +33,18 @@ class Server( ):
 			command = args.get('aid')
 			if command:			
 				
-				response = self.ping( command, args )
-				if response : client.send( str(response) )
+				response = self.ping( command, args )				
+				if response : 
+					#print 'rep:', str(response)
+					client.send( str(response) )
 				else: client.send( '[]' )
 			else: client.send( '[]' )
 			
-			self.times.append( time.time() - t0 )
+			"""self.times.append( time.time() - t0 )
 			if len( self.times ) > 10:
 				sec = float(sum( self.times )) / len( self.times )
 				print command, "average", sec*1000.00 , "msec (", sec, " sec)" 
-				self.times = []
+				self.times = []"""
 
 		"""message = client.recv(1024)
 		self.attributes = parse_qs( message )
@@ -72,7 +74,7 @@ def send( command, addr ):
 	sock = socket.socket(  )
 	sock.connect( addr )
 	sock.send( command )
-	data = sock.recv(2024)
+	data = sock.recv(8024)
 	sock.close()
 	return data
 	

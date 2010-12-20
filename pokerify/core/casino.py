@@ -19,6 +19,7 @@ class Casino( servers.Server ):
 			
 			room = self.getRoom( args.get('rid') )
 			player = room.getPlayer( args.get('pid'), args ) if room else None
+			
 			if player and hasattr( player, command ): return getattr( player, command )(  )			
 			elif room and hasattr( room, command ): return  getattr( room, command )( player )
 			elif hasattr( self, command ): return getattr( self, command )( room, player )

@@ -1,41 +1,55 @@
 # -*- coding: utf8 -*-
 
-import sys, os, datetime, random, time, types
+import sys, os, datetime, random, time, types, math
 from pokerify.core import players, cards, money
 
 class Room( ):
 	
-	def __init__(self, casino, rid, name='', seat_max=7, 
+	def __init__(self, casino, rid, name='', seat_max=15, 
 				stack_min = 10000, stack_max = 50000, 
 				blinds=[ 100, 200 ], 
 				tokens=[ 100, 200, 500, 1000, 5000 ],
-				rotation= -60,
-				angle = 240 ):
+				rotation = 20, #-60,
+				angle = 360 #180
+	):  
 	
 		self.casino =				casino
 		self.rid = 					rid
 		self.state =				1
 		self.tokens =				tokens
 		self.name =					name
-		self.places =               seat_max 
+		self.places =				seat_max 
+		
+		self.current =				0
+		self.dealer = 				0
 		
 		self.deck =					[]
 		self.cards = 				[]
 		self.bets = 				[]
+		self.betsamount =			0
+		self.betsceil =				0
+		self.betscount =			0
+		
 		self.players =				[]
 				
-		self.delay =                0
+		self.delay =                1
 		
 		self.created_at =			time.time()
 		self.updated_at =			time.time()
 		self.timeout =				False
 		
 		#GRAPHICS
-		self.rotation =             rotation;
-		self.angle =                angle;
+		self.rotation =             rotation
+		self.angle =                angle
+		
+		self.seat_positions = []
+		for i in xrange( 1, self.places+1 ):
+			angle = self.rotation + ( i-1 ) * ( self.angle / ( self.places ) ) 
+			radian = angle * math.pi/180
+			self.seat_positions.append( [i, int(math.cos( radian )*100), int(math.sin( radian )*100) ] )
 		
 	def addEvent( self, *args ):
-		for player in self.players: player.addEvent( False, *args )
+		for player in self.players: player.addEvent( *args )
 		return True
 	
 	# PERFECT SYSTEM	
@@ -64,6 +78,27 @@ class Room( ):
 	def addPlayer( self, player ): 
 		self.players.append( player )
 		self.event_addPlayer( player )
+		return True
+		
+	# PERFECT SYSTEM
+	def event_setDealer( self, player ): pass
+	def setDealer( self, player ): 
+		self.dealer = player
+		self.event_setDealer( player )
+		return True
+		
+	# PERFECT SYSTEM
+	def event_setCurrent( self, player ): pass
+	def setCurrent( self, player ): 
+		self.current = player
+		self.event_setCurrent( player )
+		return True
+		
+	# PERFECT SYSTEM
+	def event_addCard( self, card ): pass
+	def addCard( self, card ): 
+		self.cards.append( card )
+		self.event_addCard( card )
 		return True
 	
 	# PERFECT SYSTEM

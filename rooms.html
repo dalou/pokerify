@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="/javascripts/poker.js"></script> 
 		<script type="text/javascript">
 			window.rid = {{ rid }}
-			setInterval(resume, 1000);</script>
+			setInterval(resume, 1200);</script>
 		
 		<style type="text/css">
 			@import url(/room.css); 
@@ -34,7 +34,16 @@
 	</head>
 	<body>
 	
-	
+		<div style="
+			width: 100px;
+			height: 200px;
+			background: red;
+			-webkit-transform:
+        translate(250px, 125px)
+        scale3d(2, 1.4, 3)
+		">
+		
+		</div>
 	
 	
 		<div id="meta" style="z-index:999999;position: absolute; left:0; top:0px;"></div>
@@ -81,9 +90,13 @@
 			
 		</div>
 		
-		
+			
 			<div id="table" style="clear:both">
-				
+				<img id="dealer_button" style="position:absolute; width:30px;" src="/images/chips/dealer.png" />
+				<img id="current_button" style="position:absolute; width:30px;" src="/images/chips/arrow_green.png" />
+				<div id="deck"></div>
+				<div id="cards"></div>
+				<div id="burned"></div>
 				
 			</div>
 	
@@ -91,7 +104,7 @@
 								
 			</div>
 			
-			<div id="deck"></div>
+			
 			
 			
 			

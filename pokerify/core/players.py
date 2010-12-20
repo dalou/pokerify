@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 
-import random, time, types
+import random, time, types, math
+from bisect import bisect
 from pokerify.core import cards, money, pong
 
 T_DELAY = 200000
@@ -9,21 +10,21 @@ T_DELAY = 200000
 
 
 class Player(  ):
-   
+
 	def __repr__( self ): return str(self.seat)	
-	def __init__(self, pid, room, name='', level=0, stack=10000, fake=False, jokers={}):
+	def __init__( self, pid, room, name='', level=0, stack=10000, fake=False, jokers={}):
 
 		self.pid = 					pid
 		
 		self.room = 				room
 		self.name =					name
 		self.state =				1
-		self.level =				level		
+		self.level =				level
 
 		self.seat =					0
 		self.fake =					fake
 		self.data =					0
-		self.request =				None	
+		self.request =				None
 			
 		self.delay =				T_DELAY
 		self.created_at =			time.time()
@@ -31,30 +32,23 @@ class Player(  ):
 		self.timeout =				False
 		
 		self.events =				[]
-		
 		self.jokers = 				jokers
 		self.chips =				money.Chips( stack, self.room.tokens )
-		self.cards =                []
-
-		#GRAPHICS
-		
-
+		self.cards =				[]
+		self.bets =					[]
+		self.betsamount =			0
 		
 		
-
 # EVENT SYSTEM
 
-	def addEvent( self, private=False, *args ):
+	def addEvent( self, *args ):
 		if not self.fake:
-			if private:
-				for player in self.room.players: player.addEvent( False, *args )
-			else: self.events.append( list(args) )
+			for arg in args: self.events.append( arg )
 		return True
 
 	def pong( self ):		
 		if not self.fake: 			
 			events = list( self.events )
-			print events
 			self.events = []
 			return events
 		return False
@@ -63,18 +57,18 @@ class Player(  ):
 
 	# PERFECT SYSTEM
 	def event_addCard( self, card ): pass
-	def addCard( self, card ): 
+	def addCard( self, card ):
 		self.cards.append( card )
 		self.event_addCard( card )
 		return True
 	#def getCard( self, id ): return self.cards.get
 	
 	# PERFECT SYSTEM
-	def event_popCards( self, card ): pass
+	def event_popCard( self, card ): pass
 	def popCard( self, id=None ): 
 		if not id: 
 			card = self.cards.pop( )
-			self.event_popCards( card )
+			self.event_popCard( card )
 			return card	
 		return True	
 		
@@ -87,15 +81,14 @@ class Player(  ):
 		return cards
 
 	# PERFECT SYSTEM
-	def next( self, count=1, state=None ):
-		i = abs( count )		
+	def next( self, count=1, state=None ):		
+		seats = []
 		players = self.room.getPlayers( state=state )
-		for player in players:
-			if player.seat and ( player.isState( state ) or state == None ):
-				if ( self.seat + count) % len( players ) == player.seat or i <= 0 : return player
-				i -= 1
-		print
-		return 0		
+		if not len( players ): return 0
+		for player in players: seats.append( player.seat )		
+		sseats = sorted(seats)
+		seat = sseats[ ( bisect( sseats, self.seat ) - 1 + count ) % len( players ) ]		
+		return players[ seats.index( seat ) ]    
 	def prev( self, count=1, state=None ): return self.next( count=-count, state=state )
 	
 	#def executeRequest( self ): return self.request[0]( self.request[1] ) if self.request else None
@@ -108,13 +101,15 @@ class Player(  ):
 	def setState( self, state ): 
 		if state == self.state: return True
 		self.state = state
-		self.event_popCards( cards )
-		return self.update() and self.room.forceTimeOut( True )
+		self.event_setState( state )
+		return self.update()# and self.room.forceTimeOut( True )
 	
 	# PERFECT SYSTEM	
 	def event_setSeat( self, seat ): pass
-	def setSeat( self, seat=None ):
-		if self.seat: seat = self.seat
+	def setSeat( self, seat=None ):		
+		if self.seat: 
+			if not seat or seat == self.seat: return False
+			else: seat = self.seat
 		if not seat: 
 			places = range( 1, self.room.places )			
 			for player in self.room.players:
@@ -140,7 +135,18 @@ class Player(  ):
 	def popChips( self, amount=None, chips=None ):		
 		if chips: chips = self.chips.popChips( chips )			
 		elif amount and amount > 0: chips = self.chips.popAmount( amount )
-		self.event_addChips( chips )
+		self.event_popChips( chips )
+		return chips
+		
+	def event_addBet( self, chips ): pass
+	def addBet( self, amount=None, chips=None ):
+		chips = self.chips.popAmount( amount )
+		self.bets.append( chips )
+		self.betsamount += chips.amount
+		self.room.betsamount += chips.amount
+		if self.betsamount > self.room.betsceil: self.room.betsceil = self.betsamount
+		if len( self.bets ) >= self.room.betscount:  self.room.betscount = len( self.bets )
+		self.event_addBet( chips )
 		return chips
 	
 # TIMEOUT SYSTEM

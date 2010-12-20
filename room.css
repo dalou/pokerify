@@ -18,8 +18,8 @@ background: url(/images/back2.png)  }
 
 #table {
 	position: absolute;
-	left: 200px;
-	top: 200px;
+	left: 500px;
+	top: 330px;
 
 }
 #table img.table {
@@ -48,11 +48,11 @@ div.card img { width:100%; height:100%; }
 	position: absolute;
 	left:0px;
 	top: 0px;
-	width: 20px; height: 20px;
+	width: 30px;
 }
 #table .place .chips { float: left; position: relative; left:0px; top:0px; width: 20px; height: 20px; }
 
-#table .place .cards .card img { width: 35px; height: 50px; }
+ img.card { width: 35px; height: 50px; }
 
 #table .place { cursor: pointer; }
 #table .stackamount { 
